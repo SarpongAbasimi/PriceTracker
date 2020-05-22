@@ -1,12 +1,28 @@
 #!/usr/bin/env python
-from model import Monitor
+import os
+from lambo import Lambo
+from email_client import EmailProvider
+from dotenv import load_dotenv
 
-monitor = Monitor()
+load_dotenv()
+
+email = os.getenv('Email')
+password = os.getenv('Password')
+address_to_send_email= os.getenv('EmailToSendTo')
+
+client = EmailProvider(email_address=email,
+                       password=password, 
+                       address_to_send_email_to=address_to_send_email)
+
+monitor = Lambo(budget=10, email_client=client)
+
 url = 'https://www.autotrader.co.uk/cars/lamborghini'
+monitor.can_afford_lambo(url, 'h2', 'atc-type-insignia')
 
-a = monitor.get_by_class(url, 'h2', 'atc-type-insignia')
+# monitor.can_afford_lambo(url, 'h2', 'atc-type-insignia')
+# a = monitor.prices(url, 'h2', 'atc-type-insignia')
 
-print(a)
+# print(a)
 # request = monitor.get(url)
 
 # cars = request.find_all('h2', class_='atc-type-insignia')
